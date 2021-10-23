@@ -112,7 +112,7 @@ window.addEventListener("keydown", function (event) {
       frame()
       break;
     default:
-      return; // Quit when this doesn't handle the key event.
+      return;
   }
 });
 
