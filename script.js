@@ -117,3 +117,5 @@ window.addEventListener("keydown", function (event) {
 });
 
 frame();
+
+//Time limit levels spawn multiple stars
