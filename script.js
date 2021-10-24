@@ -20,8 +20,6 @@ getRandomInt = (min, max) => {
   return Math.floor(Math.random() * (max - min + 1)) + min;
 }
 
-
-
 var matrix = [];
 var grid = '';
 for(let i = 0; i < gridY; i++) {
@@ -32,9 +30,15 @@ for(let i = 0; i < gridY; i++) {
 }
 
 matrix[y][x] = pl;
-var pointY = getRandomInt(0, gridY-1);
-var pointX = getRandomInt(0, gridX-1);
-matrix[pointY][pointX] = pt;
+
+var pointY = y;
+var pointX = x;
+
+while (pointY == newY && pointX == newX) {
+  pointY = getRandomInt(0, gridY-1);
+  pointX = getRandomInt(0, gridX-1);
+  matrix[pointY][pointX] = pt;
+}
 
 borderCheck = () => {
   if(y < 0) {
