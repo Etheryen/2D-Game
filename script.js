@@ -1,9 +1,14 @@
 let screen = document.getElementById('screen');
+let licznik = document.getElementById('czas');
+
+let gameStart = false;
+let gameEnd = false;
 
 const bg = '-';
 const pl = '#';
 const pt = '*';
 
+var sekundy = 0;
 var score = 0;
 
 const gridY = 9;
@@ -68,14 +73,14 @@ update = () => {
 }
 
 write = () => {
+  grid += ('Movement: WASD<br>');
   for (let i = 0; i < gridY; i++) {
     for (let j = 0; j < gridX; j++) {
       grid += matrix[i][j];
     }
     grid += '<br>';
   }
-  grid += ('Movement: WASD');
-  grid +=(`<br>Score = ${score} pts`)
+  grid +=(`Score = ${score} pts`)
   screen.innerHTML = grid;
 }
 
@@ -97,29 +102,49 @@ frame = () => {
   grid = '';
 }
 
+
 window.addEventListener("keydown", function (event) {
-  switch (event.key) {
-    case "d":
-      newX += 1;
+  if(gameStart == false && gameEnd == false) {
+    if(event.key == ' ') {
+      gameStart = true;
       frame();
-      break;
-    case "s":
-      newY += 1
-      frame()
-      break;
-    case "a":
-      newX -= 1
-      frame()
-      break;
-    case "w":
-      newY -= 1
-      frame()
-      break;
-    default:
-      return;
+      var czas = setInterval(() => {
+        licznik.innerHTML = `Time: ${sekundy}s`
+        console.log(sekundy);
+        sekundy = parseFloat(sekundy) + 0.01;
+        sekundy = (Math.round(sekundy * 100) / 100).toFixed(2);
+        console.log(sekundy);
+      }, 10);
+    }
+  }
+  if(gameStart == true && gameEnd == false) {
+    switch (event.key) {
+      case 'd':
+        newX += 1;
+        frame();
+        break;
+      case 's':
+        newY += 1
+        frame()
+        break;
+      case 'a':
+        newX -= 1
+        frame()
+        break;
+      case 'w':
+        newY -= 1
+        frame()
+        break;
+      default:
+        return;
+    }
+    if(sekundy > 10) {
+      gameEnd = true;
+    }
   }
 });
 
-frame();
 
-//Time limit levels spawn multiple stars
+
+
+//Spawn multiple stars
