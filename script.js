@@ -1,12 +1,22 @@
 let screen = document.getElementById('screen');
-let licznik = document.getElementById('czas');
+let counter = document.getElementById('czas');
+let container = document.getElementsByClassName('container');
+let high = document.getElementById('highscore');
+let restart = document.getElementById('restart');
 
 let gameStart = false;
 let gameEnd = false;
+var highscore = 0;
 
 const bg = '-';
 const pl = '#';
 const pt = '*';
+
+getRandomInt = (min, max) => {
+  min = Math.ceil(min);
+  max = Math.floor(max);
+  return Math.floor(Math.random() * (max - min + 1)) + min;
+}
 
 var sekundy = 0;
 var score = 0;
@@ -19,12 +29,6 @@ var x = Math.floor((gridX-1)/2);
 var newX = x;
 var newY = y;
 
-getRandomInt = (min, max) => {
-  min = Math.ceil(min);
-  max = Math.floor(max);
-  return Math.floor(Math.random() * (max - min + 1)) + min;
-}
-
 var matrix = [];
 var grid = '';
 for(let i = 0; i < gridY; i++) {
@@ -33,7 +37,6 @@ for(let i = 0; i < gridY; i++) {
     matrix[i].push([bg]);
   }
 }
-
 matrix[y][x] = pl;
 
 var pointY = y;
@@ -43,6 +46,42 @@ while (pointY == newY && pointX == newX) {
   pointY = getRandomInt(0, gridY-1);
   pointX = getRandomInt(0, gridX-1);
   matrix[pointY][pointX] = pt;
+}
+
+start = () => {
+  high.innerHTML = '';
+  restart.innerHTML = '';
+  sekundy = 15;
+  score = 0;
+
+  y = Math.floor((gridY-1)/2);
+  x = Math.floor((gridX-1)/2);
+  newX = x;
+  newY = y;
+
+  matrix = [];
+  grid = '';
+  for(let i = 0; i < gridY; i++) {
+    matrix.push([]);
+    for(let j = 0; j < gridX; j++) {
+      matrix[i].push([bg]);
+    }
+  }
+  matrix[y][x] = pl;
+  
+  pointY = y;
+  pointX = x;
+
+  while (pointY == newY && pointX == newX) {
+    pointY = getRandomInt(0, gridY-1);
+    pointX = getRandomInt(0, gridX-1);
+    matrix[pointY][pointX] = pt;
+  }
+  
+  gameStart = true;
+  gameEnd = false;
+  console.log('test');
+  frame();
 }
 
 borderCheck = () => {
@@ -80,7 +119,7 @@ write = () => {
     }
     grid += '<br>';
   }
-  grid +=(`Score = ${score} pts`)
+  grid +=(`Score: ${score} pts`)
   screen.innerHTML = grid;
 }
 
@@ -102,18 +141,27 @@ frame = () => {
   grid = '';
 }
 
-
 window.addEventListener("keydown", function (event) {
-  if(gameStart == false && gameEnd == false) {
+  if(gameStart == false) {
     if(event.key == ' ') {
-      gameStart = true;
-      frame();
+      start();
       var czas = setInterval(() => {
-        licznik.innerHTML = `Time: ${sekundy}s`
-        console.log(sekundy);
-        sekundy = parseFloat(sekundy) + 0.01;
+        if(sekundy <= 0.01) {
+          gameEnd = true;
+          gameStart = false;
+          if(score > highscore) {
+            highscore = score;
+          }
+          screen.innerHTML = `GAME OVER<br>Score: ${score} pts<br>`;
+          high.innerHTML = `Highscore: ${highscore} pts`
+          restart.innerHTML = '<br>Press SPACE to restart'
+          counter.innerHTML = '';
+          this.clearInterval(czas);
+          return;
+        }
+        counter.innerHTML = `Time: ${sekundy}s`
+        sekundy = parseFloat(sekundy) - 0.01;
         sekundy = (Math.round(sekundy * 100) / 100).toFixed(2);
-        console.log(sekundy);
       }, 10);
     }
   }
@@ -138,13 +186,8 @@ window.addEventListener("keydown", function (event) {
       default:
         return;
     }
-    if(sekundy > 10) {
-      gameEnd = true;
-    }
   }
 });
 
-
-
-
 //Spawn multiple stars
+//R to restart mid-game

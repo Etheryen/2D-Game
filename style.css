@@ -13,6 +13,10 @@
   transform: translate(-50%, -50%);
 }
 
+#highscore {
+  color: gold;
+}
+
 body {
   background-color: #121212;
   color: white;
