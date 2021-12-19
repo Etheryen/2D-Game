@@ -191,3 +191,4 @@ window.addEventListener("keydown", function (event) {
 
 //Spawn multiple stars
 //R to restart mid-game
+//Alt game mode - collect all stars in time
