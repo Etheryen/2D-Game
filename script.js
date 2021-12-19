@@ -80,7 +80,6 @@ start = () => {
   
   gameStart = true;
   gameEnd = false;
-  console.log('test');
   frame();
 }
 
