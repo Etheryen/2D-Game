@@ -51,7 +51,7 @@ while (pointY == newY && pointX == newX) {
 start = () => {
   high.innerHTML = '';
   restart.innerHTML = '';
-  sekundy = 15;
+  sekundy = 5;
   score = 0;
 
   y = Math.floor((gridY-1)/2);
@@ -191,3 +191,7 @@ window.addEventListener("keydown", function (event) {
 //Spawn multiple stars
 //R to restart mid-game
 //Alt game mode - collect all stars in time
+//time 0.00 -> 0.0 for clarity
+//smaller board / balanced and fun gameplay
+//arrow movement
+//point = more time
