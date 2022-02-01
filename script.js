@@ -51,7 +51,7 @@ while (pointY == newY && pointX == newX) {
 start = () => {
   high.innerHTML = '';
   restart.innerHTML = '';
-  sekundy = 5;
+  sekundy = 15;
   score = 0;
 
   y = Math.floor((gridY-1)/2);
